@@ -519,7 +519,7 @@ class ModelCheckpoint(Callback):
             self.best_k_models.pop(self.kth_best_model_path)
             del_list.append(delpath)
 
-        self.best_k_models[filepath] = current
+        self.best_k_models[filepath] = float(current)
         if len(self.best_k_models) == k:
             # monitor dict has reached k elements
             _op = max if self.mode == "min" else min
@@ -548,7 +548,7 @@ class ModelCheckpoint(Callback):
         Saves the `best_k_models` dict containing the checkpoint
         paths with the corresponding scores to a YAML file.
         """
-        best_k = {k: v.item() for k, v in self.best_k_models.items()}
+        best_k = {k: v for k, v in self.best_k_models.items()}
         if filepath is None:
             filepath = os.path.join(self.dirpath, "best_k_models.yaml")
         with self._fs.open(filepath, "w") as fp:
